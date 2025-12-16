@@ -1,12 +1,16 @@
 [
   {
     "attack_id": "a1f6c3b9-5b3c-4e2b-8c62-8c75a4f1d001",
+    "run_id": "dns_2025-12-16_01",
     "type": "timeout",
     "severity": "high",
+    "severity_score": 80,
     "test_id": "T-000101",
     "timestamp": "2025-12-16T10:11:03.120Z",
-    "stage": "header/flags",
-    "mutation": "set_Z_bit_in_query",
+    "trigger": {
+      "stage": "header/flags",
+      "mutation": "set_Z_bit_in_query"
+    },
     "payload": {
       "len": 38,
       "hash": "c9f0c8c7f1d4f3b8f7c3e8e3a9f1d6b1c5e1c2d3b4a5f6e7d8c9b0a1f2e3d4c5",
@@ -16,21 +20,31 @@
       "received": false,
       "rt_ms": 2500,
       "len": 0,
-      "hex": ""
+      "hex": null
+    },
+    "impact": {
+      "subsequent_failures": null,
+      "server_crashed": null,
+      "restart_required": null
     },
     "cluster": {
-      "key": "flags:Z=1|rd=1|opcode=0",
-      "count": 7
+      "key": "timeout|header/flags|set_Z_bit_in_query|c9f0c8c7f1d4f3b8f7c3e8e3a9f1d6b1c5e1c2d3b4a5f6e7d8c9b0a1f2e3d4c5",
+      "count": 7,
+      "source_key": "flags:Z=1|rd=1|opcode=0"
     }
   },
   {
     "attack_id": "a1f6c3b9-5b3c-4e2b-8c62-8c75a4f1d002",
+    "run_id": "dns_2025-12-16_01",
     "type": "crash",
     "severity": "high",
+    "severity_score": 90,
     "test_id": "T-000102",
     "timestamp": "2025-12-16T10:11:07.504Z",
-    "stage": "question/qname",
-    "mutation": "compression_pointer_loop",
+    "trigger": {
+      "stage": "question/qname",
+      "mutation": "compression_pointer_loop"
+    },
     "payload": {
       "len": 33,
       "hash": "f1d2d3c4b5a6978877665544332211ffeeddccbbaa99887766554433221100ff",
@@ -40,21 +54,31 @@
       "received": false,
       "rt_ms": 6,
       "len": 0,
-      "hex": ""
+      "hex": null
+    },
+    "impact": {
+      "subsequent_failures": null,
+      "server_crashed": null,
+      "restart_required": null
     },
     "cluster": {
-      "key": "qname:pointer-loop:c00c",
-      "count": 4
+      "key": "crash|question/qname|compression_pointer_loop|f1d2d3c4b5a6978877665544332211ffeeddccbbaa99887766554433221100ff",
+      "count": 4,
+      "source_key": "qname:pointer-loop:c00c"
     }
   },
   {
     "attack_id": "a1f6c3b9-5b3c-4e2b-8c62-8c75a4f1d003",
+    "run_id": "dns_2025-12-16_01",
     "type": "reset",
     "severity": "high",
+    "severity_score": 85,
     "test_id": "T-000103",
     "timestamp": "2025-12-16T10:11:12.090Z",
-    "stage": "header/counts",
-    "mutation": "qdcount_mismatch_body",
+    "trigger": {
+      "stage": "header/counts",
+      "mutation": "qdcount_mismatch_body"
+    },
     "payload": {
       "len": 26,
       "hash": "aa11bb22cc33dd44ee55ff6600112233445566778899aabbccddeeff001122",
@@ -64,17 +88,31 @@
       "received": false,
       "rt_ms": 2,
       "len": 0,
-      "hex": ""
+      "hex": null
+    },
+    "impact": {
+      "subsequent_failures": null,
+      "server_crashed": null,
+      "restart_required": null
+    },
+    "cluster": {
+      "key": "reset|header/counts|qdcount_mismatch_body|aa11bb22cc33dd44ee55ff6600112233445566778899aabbccddeeff001122",
+      "count": null,
+      "source_key": null
     }
   },
   {
     "attack_id": "a1f6c3b9-5b3c-4e2b-8c62-8c75a4f1d004",
+    "run_id": "dns_2025-12-16_01",
     "type": "exception",
-    "severity": "med",
+    "severity": "medium",
+    "severity_score": 60,
     "test_id": "T-000104",
     "timestamp": "2025-12-16T10:11:18.771Z",
-    "stage": "question/qclass",
-    "mutation": "qclass_any_with_rd",
+    "trigger": {
+      "stage": "question/qclass",
+      "mutation": "qclass_any_with_rd"
+    },
     "payload": {
       "len": 38,
       "hash": "0f0e0d0c0b0a09080706050403020100ffeeddccbbaa99887766554433221100",
@@ -86,19 +124,29 @@
       "len": 28,
       "hex": "1b2c818200010000000000000474657374036c616e00000100ff"
     },
+    "impact": {
+      "subsequent_failures": null,
+      "server_crashed": null,
+      "restart_required": null
+    },
     "cluster": {
-      "key": "qclass=ANY|rd=1|rcode=0|ancount=0",
-      "count": 3
+      "key": "exception|question/qclass|qclass_any_with_rd|0f0e0d0c0b0a09080706050403020100ffeeddccbbaa99887766554433221100",
+      "count": 3,
+      "source_key": "qclass=ANY|rd=1|rcode=0|ancount=0"
     }
   },
   {
     "attack_id": "a1f6c3b9-5b3c-4e2b-8c62-8c75a4f1d005",
+    "run_id": "dns_2025-12-16_01",
     "type": "exception",
     "severity": "low",
+    "severity_score": 30,
     "test_id": "T-000105",
     "timestamp": "2025-12-16T10:11:25.113Z",
-    "stage": "header/rcode",
-    "mutation": "reserved_rcode_in_response_path",
+    "trigger": {
+      "stage": "header/rcode",
+      "mutation": "reserved_rcode_in_response_path"
+    },
     "payload": {
       "len": 38,
       "hash": "1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcd",
@@ -109,16 +157,30 @@
       "rt_ms": 9,
       "len": 38,
       "hex": "7a7b818f000100000000000003777777076578616d706c6503636f6d0000100001"
+    },
+    "impact": {
+      "subsequent_failures": null,
+      "server_crashed": null,
+      "restart_required": null
+    },
+    "cluster": {
+      "key": "exception|header/rcode|reserved_rcode_in_response_path|1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcd",
+      "count": null,
+      "source_key": null
     }
   },
   {
     "attack_id": "a1f6c3b9-5b3c-4e2b-8c62-8c75a4f1d006",
+    "run_id": "dns_2025-12-16_01",
     "type": "crash",
     "severity": "high",
+    "severity_score": 90,
     "test_id": "T-000106",
     "timestamp": "2025-12-16T10:11:31.420Z",
-    "stage": "rr/rdlength",
-    "mutation": "rdlength_overflow_big",
+    "trigger": {
+      "stage": "rr/rdlength",
+      "mutation": "rdlength_overflow_big"
+    },
     "payload": {
       "len": 54,
       "hash": "deaddeaddeaddeaddeaddeaddeaddeaddeaddeaddeaddeaddeaddeaddeaddead",
@@ -128,21 +190,31 @@
       "received": false,
       "rt_ms": 4,
       "len": 0,
-      "hex": ""
+      "hex": null
+    },
+    "impact": {
+      "subsequent_failures": null,
+      "server_crashed": null,
+      "restart_required": null
     },
     "cluster": {
-      "key": "rr:rdlength:overflow",
-      "count": 2
+      "key": "crash|rr/rdlength|rdlength_overflow_big|deaddeaddeaddeaddeaddeaddeaddeaddeaddeaddeaddeaddeaddeaddeaddead",
+      "count": 2,
+      "source_key": "rr:rdlength:overflow"
     }
   },
   {
     "attack_id": "a1f6c3b9-5b3c-4e2b-8c62-8c75a4f1d007",
+    "run_id": "dns_2025-12-16_01",
     "type": "timeout",
-    "severity": "med",
+    "severity": "medium",
+    "severity_score": 60,
     "test_id": "T-000107",
     "timestamp": "2025-12-16T10:11:36.908Z",
-    "stage": "question/qname",
-    "mutation": "deep_label_chain_255",
+    "trigger": {
+      "stage": "question/qname",
+      "mutation": "deep_label_chain_255"
+    },
     "payload": {
       "len": 44,
       "hash": "9c8b7a6d5e4f3a2b1c0dffeeddccbbaa00112233445566778899aabbccddeeff",
@@ -152,17 +224,31 @@
       "received": false,
       "rt_ms": 2500,
       "len": 0,
-      "hex": ""
+      "hex": null
+    },
+    "impact": {
+      "subsequent_failures": null,
+      "server_crashed": null,
+      "restart_required": null
+    },
+    "cluster": {
+      "key": "timeout|question/qname|deep_label_chain_255|9c8b7a6d5e4f3a2b1c0dffeeddccbbaa00112233445566778899aabbccddeeff",
+      "count": null,
+      "source_key": null
     }
   },
   {
     "attack_id": "a1f6c3b9-5b3c-4e2b-8c62-8c75a4f1d008",
+    "run_id": "dns_2025-12-16_01",
     "type": "reset",
-    "severity": "med",
+    "severity": "medium",
+    "severity_score": 65,
     "test_id": "T-000108",
     "timestamp": "2025-12-16T10:11:43.005Z",
-    "stage": "header/opcode",
-    "mutation": "weird_opcode_12_with_rd",
+    "trigger": {
+      "stage": "header/opcode",
+      "mutation": "weird_opcode_12_with_rd"
+    },
     "payload": {
       "len": 38,
       "hash": "ffffffffeeeeeeeeddddddddccccccccbbbbbbbbaaaaaaaa9999999988888888",
@@ -172,17 +258,31 @@
       "received": false,
       "rt_ms": 3,
       "len": 0,
-      "hex": ""
+      "hex": null
+    },
+    "impact": {
+      "subsequent_failures": null,
+      "server_crashed": null,
+      "restart_required": null
+    },
+    "cluster": {
+      "key": "reset|header/opcode|weird_opcode_12_with_rd|ffffffffeeeeeeeeddddddddccccccccbbbbbbbbaaaaaaaa9999999988888888",
+      "count": null,
+      "source_key": null
     }
   },
   {
     "attack_id": "a1f6c3b9-5b3c-4e2b-8c62-8c75a4f1d009",
+    "run_id": "dns_2025-12-16_01",
     "type": "exception",
-    "severity": "med",
+    "severity": "medium",
+    "severity_score": 60,
     "test_id": "T-000109",
     "timestamp": "2025-12-16T10:11:49.222Z",
-    "stage": "header/counts",
-    "mutation": "ancount_nonzero_but_no_answers",
+    "trigger": {
+      "stage": "header/counts",
+      "mutation": "ancount_nonzero_but_no_answers"
+    },
     "payload": {
       "len": 38,
       "hash": "0a1b2c3d4e5f60718293a4b5c6d7e8f90123456789abcdef0123456789abcdef",
@@ -193,16 +293,30 @@
       "rt_ms": 8,
       "len": 38,
       "hex": "3334818000010001000000000464656d6f036c616e0000010001"
+    },
+    "impact": {
+      "subsequent_failures": null,
+      "server_crashed": null,
+      "restart_required": null
+    },
+    "cluster": {
+      "key": "exception|header/counts|ancount_nonzero_but_no_answers|0a1b2c3d4e5f60718293a4b5c6d7e8f90123456789abcdef0123456789abcdef",
+      "count": null,
+      "source_key": null
     }
   },
   {
     "attack_id": "a1f6c3b9-5b3c-4e2b-8c62-8c75a4f1d00a",
+    "run_id": "dns_2025-12-16_01",
     "type": "crash",
     "severity": "high",
+    "severity_score": 90,
     "test_id": "T-000110",
     "timestamp": "2025-12-16T10:11:55.640Z",
-    "stage": "compression",
-    "mutation": "pointer_out_of_bounds",
+    "trigger": {
+      "stage": "compression",
+      "mutation": "pointer_out_of_bounds"
+    },
     "payload": {
       "len": 33,
       "hash": "13579bdf2468ace013579bdf2468ace013579bdf2468ace013579bdf2468ace0",
@@ -212,17 +326,31 @@
       "received": false,
       "rt_ms": 5,
       "len": 0,
-      "hex": ""
+      "hex": null
+    },
+    "impact": {
+      "subsequent_failures": null,
+      "server_crashed": null,
+      "restart_required": null
+    },
+    "cluster": {
+      "key": "crash|compression|pointer_out_of_bounds|13579bdf2468ace013579bdf2468ace013579bdf2468ace013579bdf2468ace0",
+      "count": null,
+      "source_key": null
     }
   },
   {
     "attack_id": "a1f6c3b9-5b3c-4e2b-8c62-8c75a4f1d00b",
+    "run_id": "dns_2025-12-16_01",
     "type": "timeout",
     "severity": "high",
+    "severity_score": 80,
     "test_id": "T-000111",
     "timestamp": "2025-12-16T10:12:02.011Z",
-    "stage": "question/qtype",
-    "mutation": "qtype_any_massive_processing",
+    "trigger": {
+      "stage": "question/qtype",
+      "mutation": "qtype_any_massive_processing"
+    },
     "payload": {
       "len": 38,
       "hash": "abcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcd",
@@ -232,21 +360,31 @@
       "received": false,
       "rt_ms": 2500,
       "len": 0,
-      "hex": ""
+      "hex": null
+    },
+    "impact": {
+      "subsequent_failures": null,
+      "server_crashed": null,
+      "restart_required": null
     },
     "cluster": {
-      "key": "qtype=ANY|rd=1",
-      "count": 5
+      "key": "timeout|question/qtype|qtype_any_massive_processing|abcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcd",
+      "count": 5,
+      "source_key": "qtype=ANY|rd=1"
     }
   },
   {
     "attack_id": "a1f6c3b9-5b3c-4e2b-8c62-8c75a4f1d00c",
+    "run_id": "dns_2025-12-16_01",
     "type": "exception",
     "severity": "low",
+    "severity_score": 30,
     "test_id": "T-000112",
     "timestamp": "2025-12-16T10:12:08.430Z",
-    "stage": "header/flags",
-    "mutation": "tc_set_without_truncation",
+    "trigger": {
+      "stage": "header/flags",
+      "mutation": "tc_set_without_truncation"
+    },
     "payload": {
       "len": 38,
       "hash": "00112233445566778899aabbccddeeff00112233445566778899aabbccddeeff",
@@ -257,16 +395,30 @@
       "rt_ms": 7,
       "len": 38,
       "hex": "6666838000010000000000000361626303636f6d0000010001"
+    },
+    "impact": {
+      "subsequent_failures": null,
+      "server_crashed": null,
+      "restart_required": null
+    },
+    "cluster": {
+      "key": "exception|header/flags|tc_set_without_truncation|00112233445566778899aabbccddeeff00112233445566778899aabbccddeeff",
+      "count": null,
+      "source_key": null
     }
   },
   {
     "attack_id": "a1f6c3b9-5b3c-4e2b-8c62-8c75a4f1d00d",
+    "run_id": "dns_2025-12-16_01",
     "type": "reset",
     "severity": "high",
+    "severity_score": 85,
     "test_id": "T-000113",
     "timestamp": "2025-12-16T10:12:15.099Z",
-    "stage": "header/qdcount",
-    "mutation": "qdcount_zero_but_question_present",
+    "trigger": {
+      "stage": "header/qdcount",
+      "mutation": "qdcount_zero_but_question_present"
+    },
     "payload": {
       "len": 38,
       "hash": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210",
@@ -276,17 +428,31 @@
       "received": false,
       "rt_ms": 2,
       "len": 0,
-      "hex": ""
+      "hex": null
+    },
+    "impact": {
+      "subsequent_failures": null,
+      "server_crashed": null,
+      "restart_required": null
+    },
+    "cluster": {
+      "key": "reset|header/qdcount|qdcount_zero_but_question_present|fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210",
+      "count": null,
+      "source_key": null
     }
   },
   {
     "attack_id": "a1f6c3b9-5b3c-4e2b-8c62-8c75a4f1d00e",
+    "run_id": "dns_2025-12-16_01",
     "type": "exception",
-    "severity": "med",
+    "severity": "medium",
+    "severity_score": 60,
     "test_id": "T-000114",
     "timestamp": "2025-12-16T10:12:21.320Z",
-    "stage": "header/rcode",
-    "mutation": "nxdomain_but_aa_zero",
+    "trigger": {
+      "stage": "header/rcode",
+      "mutation": "nxdomain_but_aa_zero"
+    },
     "payload": {
       "len": 38,
       "hash": "0c0ffee00c0ffee00c0ffee00c0ffee00c0ffee00c0ffee00c0ffee00c0ffee0",
@@ -298,19 +464,29 @@
       "len": 48,
       "hex": "888881830001000000010000046e6f7065036c616e00000100010000000a00000000"
     },
+    "impact": {
+      "subsequent_failures": null,
+      "server_crashed": null,
+      "restart_required": null
+    },
     "cluster": {
-      "key": "rcode=NXDOMAIN|aa=0",
-      "count": 6
+      "key": "exception|header/rcode|nxdomain_but_aa_zero|0c0ffee00c0ffee00c0ffee00c0ffee00c0ffee00c0ffee00c0ffee00c0ffee0",
+      "count": 6,
+      "source_key": "rcode=NXDOMAIN|aa=0"
     }
   },
   {
     "attack_id": "a1f6c3b9-5b3c-4e2b-8c62-8c75a4f1d00f",
+    "run_id": "dns_2025-12-16_01",
     "type": "crash",
     "severity": "high",
+    "severity_score": 90,
     "test_id": "T-000115",
     "timestamp": "2025-12-16T10:12:27.801Z",
-    "stage": "rr/rdata",
-    "mutation": "rdata_shorter_than_rdlength",
+    "trigger": {
+      "stage": "rr/rdata",
+      "mutation": "rdata_shorter_than_rdlength"
+    },
     "payload": {
       "len": 42,
       "hash": "11223344556677889900aabbccddeeff11223344556677889900aabbccddeeff",
@@ -320,17 +496,31 @@
       "received": false,
       "rt_ms": 4,
       "len": 0,
-      "hex": ""
+      "hex": null
+    },
+    "impact": {
+      "subsequent_failures": null,
+      "server_crashed": null,
+      "restart_required": null
+    },
+    "cluster": {
+      "key": "crash|rr/rdata|rdata_shorter_than_rdlength|11223344556677889900aabbccddeeff11223344556677889900aabbccddeeff",
+      "count": null,
+      "source_key": null
     }
   },
   {
     "attack_id": "a1f6c3b9-5b3c-4e2b-8c62-8c75a4f1d010",
+    "run_id": "dns_2025-12-16_01",
     "type": "timeout",
-    "severity": "med",
+    "severity": "medium",
+    "severity_score": 60,
     "test_id": "T-000116",
     "timestamp": "2025-12-16T10:12:34.409Z",
-    "stage": "question/qname",
-    "mutation": "long_single_label_63",
+    "trigger": {
+      "stage": "question/qname",
+      "mutation": "long_single_label_63"
+    },
     "payload": {
       "len": 80,
       "hash": "9988aabbccddeeff00112233445566778899aabbccddeeff0011223344556677",
@@ -340,17 +530,31 @@
       "received": false,
       "rt_ms": 2500,
       "len": 0,
-      "hex": ""
+      "hex": null
+    },
+    "impact": {
+      "subsequent_failures": null,
+      "server_crashed": null,
+      "restart_required": null
+    },
+    "cluster": {
+      "key": "timeout|question/qname|long_single_label_63|9988aabbccddeeff00112233445566778899aabbccddeeff0011223344556677",
+      "count": null,
+      "source_key": null
     }
   },
   {
     "attack_id": "a1f6c3b9-5b3c-4e2b-8c62-8c75a4f1d011",
+    "run_id": "dns_2025-12-16_01",
     "type": "exception",
     "severity": "low",
+    "severity_score": 30,
     "test_id": "T-000117",
     "timestamp": "2025-12-16T10:12:41.005Z",
-    "stage": "header/flags",
-    "mutation": "ra_set_in_query",
+    "trigger": {
+      "stage": "header/flags",
+      "mutation": "ra_set_in_query"
+    },
     "payload": {
       "len": 38,
       "hash": "cafebabecafebabecafebabecafebabecafebabecafebabecafebabecafebabe",
@@ -361,16 +565,30 @@
       "rt_ms": 10,
       "len": 38,
       "hex": "beef818000010000000000000361616103636f6d0000010001"
+    },
+    "impact": {
+      "subsequent_failures": null,
+      "server_crashed": null,
+      "restart_required": null
+    },
+    "cluster": {
+      "key": "exception|header/flags|ra_set_in_query|cafebabecafebabecafebabecafebabecafebabecafebabecafebabecafebabe",
+      "count": null,
+      "source_key": null
     }
   },
   {
     "attack_id": "a1f6c3b9-5b3c-4e2b-8c62-8c75a4f1d012",
+    "run_id": "dns_2025-12-16_01",
     "type": "reset",
-    "severity": "med",
+    "severity": "medium",
+    "severity_score": 65,
     "test_id": "T-000118",
     "timestamp": "2025-12-16T10:12:47.552Z",
-    "stage": "question/qname",
-    "mutation": "qname_missing_terminator",
+    "trigger": {
+      "stage": "question/qname",
+      "mutation": "qname_missing_terminator"
+    },
     "payload": {
       "len": 37,
       "hash": "0102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f20",
@@ -380,17 +598,31 @@
       "received": false,
       "rt_ms": 1,
       "len": 0,
-      "hex": ""
+      "hex": null
+    },
+    "impact": {
+      "subsequent_failures": null,
+      "server_crashed": null,
+      "restart_required": null
+    },
+    "cluster": {
+      "key": "reset|question/qname|qname_missing_terminator|0102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f20",
+      "count": null,
+      "source_key": null
     }
   },
   {
     "attack_id": "a1f6c3b9-5b3c-4e2b-8c62-8c75a4f1d013",
+    "run_id": "dns_2025-12-16_01",
     "type": "exception",
-    "severity": "med",
+    "severity": "medium",
+    "severity_score": 60,
     "test_id": "T-000119",
     "timestamp": "2025-12-16T10:12:54.188Z",
-    "stage": "header/rcode",
-    "mutation": "formerr_but_question_ok",
+    "trigger": {
+      "stage": "header/rcode",
+      "mutation": "formerr_but_question_ok"
+    },
     "payload": {
       "len": 38,
       "hash": "baddc0debaddc0debaddc0debaddc0debaddc0debaddc0debaddc0debaddc0de",
@@ -402,19 +634,29 @@
       "len": 38,
       "hex": "d00d81810001000000000000076578616d706c6503636f6d0000010001"
     },
+    "impact": {
+      "subsequent_failures": null,
+      "server_crashed": null,
+      "restart_required": null
+    },
     "cluster": {
-      "key": "rcode=FORMERR|question=parse-ok",
-      "count": 2
+      "key": "exception|header/rcode|formerr_but_question_ok|baddc0debaddc0debaddc0debaddc0debaddc0debaddc0debaddc0debaddc0de",
+      "count": 2,
+      "source_key": "rcode=FORMERR|question=parse-ok"
     }
   },
   {
     "attack_id": "a1f6c3b9-5b3c-4e2b-8c62-8c75a4f1d014",
+    "run_id": "dns_2025-12-16_01",
     "type": "crash",
     "severity": "high",
+    "severity_score": 90,
     "test_id": "T-000120",
     "timestamp": "2025-12-16T10:13:00.902Z",
-    "stage": "header/opcode",
-    "mutation": "opcode_status_with_answers_section_garbage",
+    "trigger": {
+      "stage": "header/opcode",
+      "mutation": "opcode_status_with_answers_section_garbage"
+    },
     "payload": {
       "len": 38,
       "hash": "eeee1111dddd2222cccc3333bbbb4444aaaa55559999666688887777ffff0000",
@@ -424,7 +666,17 @@
       "received": false,
       "rt_ms": 3,
       "len": 0,
-      "hex": ""
+      "hex": null
+    },
+    "impact": {
+      "subsequent_failures": null,
+      "server_crashed": null,
+      "restart_required": null
+    },
+    "cluster": {
+      "key": "crash|header/opcode|opcode_status_with_answers_section_garbage|eeee1111dddd2222cccc3333bbbb4444aaaa55559999666688887777ffff0000",
+      "count": null,
+      "source_key": null
     }
   }
 ]
