@@ -1,0 +1,56 @@
+[
+  {
+    "problematic_input": "AAECAwQFBgcICQoLDA0ODw==",
+    "problematic_field": "DNS Header.flags",
+    "failure_cause": "Server Fault",
+    "explanation": "Server crashed when QR bit was set in a query packet.",
+    "response_received": false,
+    "response_b64": null,
+    "observations": ["malformed_dns", "server_reset"]
+  },
+  {
+    "problematic_input": "/////wAAAAAAAAAAAA==",
+    "problematic_field": "DNS Question.qname",
+    "failure_cause": "Memory Leak",
+    "explanation": "Repeated long domain names caused increasing memory usage.",
+    "response_received": true,
+    "response_b64": "AAECAwQFBgcICQo=",
+    "observations": ["valid_dns", "slow_response"]
+  },
+  {
+    "problematic_input": "MTIzNDU2Nzg5MGFiY2RlZg==",
+    "problematic_field": "DNS Answer.rdata",
+    "failure_cause": "Other",
+    "explanation": "Unexpected RDATA length did not match declared size.",
+    "response_received": true,
+    "response_b64": "YWJjZGVmZ2hpamtsbW5vcA==",
+    "observations": ["malformed_dns"]
+  },
+  {
+    "problematic_input": "AQIDBAUGBwgJCgsMDQ4PEBESExQ=",
+    "problematic_field": "DNS Header.id",
+    "failure_cause": "Server Fault",
+    "explanation": "Invalid transaction ID triggered an assertion failure.",
+    "response_received": false,
+    "response_b64": null,
+    "observations": ["timeout"]
+  },
+  {
+    "problematic_input": "QUJDREVGR0hJSktMTU5PUFFSU1RVVldYWVo=",
+    "problematic_field": "DNS Question.qtype",
+    "failure_cause": "Memory Leak",
+    "explanation": "Unsupported QTYPE values caused memory to not be freed.",
+    "response_received": true,
+    "response_b64": "AQIDBAUG",
+    "observations": ["valid_dns", "unexpected_behavior"]
+  },
+  {
+    "problematic_input": "//////////8=",
+    "problematic_field": "DNS Compression Pointer",
+    "failure_cause": "Server Fault",
+    "explanation": "Infinite compression pointer loop caused stack overflow.",
+    "response_received": false,
+    "response_b64": null,
+    "observations": ["malformed_dns", "crash"]
+  }
+]

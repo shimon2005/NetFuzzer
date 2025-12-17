@@ -1,0 +1,144 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Fuzzer Static Report</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 32px; background:#f6f6f6; }
+    h1 { text-align:center; margin-bottom: 18px; }
+    .grid { display:grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 16px; }
+    .card { background:white; border-radius:12px; padding:14px; box-shadow:0 2px 8px rgba(0,0,0,0.06); }
+    .k { color:#666; font-size: 12px; }
+    .v { font-size: 26px; font-weight: 800; }
+    img { max-width: 100%; height: auto; border-radius: 10px; }
+    table { width:100%; border-collapse: collapse; background:white; border-radius:12px; overflow:hidden; }
+    th, td { padding: 8px 10px; border-bottom: 1px solid #eee; font-size: 13px; vertical-align: top; }
+    th { background: #fafafa; text-align:left; }
+    a { color:#0b57d0; text-decoration:none; }
+    .muted { color:#888; font-size: 12px; }
+    .section { margin-bottom: 14px; }
+  </style>
+</head>
+<body>
+  <h1>📄 Fuzzer Static Report</h1>
+
+  <div class="grid">
+    <div class="card"><div class="k">Total records</div><div class="v">6</div></div>
+    <div class="card"><div class="k">response_received = true</div><div class="v">3</div></div>
+    <div class="card"><div class="k">response_received = false</div><div class="v">3</div></div>
+    <div class="card"><div class="k">Distinct failure causes</div><div class="v">3</div></div>
+  </div>
+
+  <div class="section card">
+    <div class="k">Failure cause breakdown</div>
+    <div class="muted">
+      
+        <span><b>Server Fault</b>: 3</span> · 
+      
+        <span><b>Memory Leak</b>: 2</span> · 
+      
+        <span><b>Other</b>: 1</span>
+      
+    </div>
+  </div>
+
+  <div class="section" style="display:grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+    
+    <div class="card">
+      <h3 style="margin-top:0;">Failures by Cause</h3>
+      <img src="assets/failures_by_cause.png" alt="Failures by Cause">
+    </div>
+    
+
+    
+    <div class="card">
+      <h3 style="margin-top:0;">Response Received</h3>
+      <img src="assets/response_received.png" alt="Response Received">
+    </div>
+    
+  </div>
+
+  
+  <div class="section card">
+    <h3 style="margin-top:0;">Top Observations</h3>
+    <img src="assets/top_observations.png" alt="Top Observations">
+  </div>
+  
+
+  <div class="section card">
+    <h3 style="margin-top:0;">Results Table</h3>
+    <div class="muted">Click a Record ID to open details.</div>
+    <table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>row_id</th>
+      <th>details_file</th>
+      <th>problematic_field</th>
+      <th>failure_cause</th>
+      <th>response_received</th>
+      <th>explanation</th>
+      <th>input_preview_hex</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><a href="details/R00000.html">R00000</a></td>
+      <td>details/R00000.html</td>
+      <td>DNS Header.flags</td>
+      <td>Server Fault</td>
+      <td>False</td>
+      <td>Server crashed when QR bit was set in a query packet.</td>
+      <td>000102030405060708090a0b0c0d0e0f</td>
+    </tr>
+    <tr>
+      <td><a href="details/R00001.html">R00001</a></td>
+      <td>details/R00001.html</td>
+      <td>DNS Question.qname</td>
+      <td>Memory Leak</td>
+      <td>True</td>
+      <td>Repeated long domain names caused increasing memory usage.</td>
+      <td>ffffffff000000000000000000</td>
+    </tr>
+    <tr>
+      <td><a href="details/R00002.html">R00002</a></td>
+      <td>details/R00002.html</td>
+      <td>DNS Answer.rdata</td>
+      <td>Other</td>
+      <td>True</td>
+      <td>Unexpected RDATA length did not match declared size.</td>
+      <td>31323334353637383930616263646566</td>
+    </tr>
+    <tr>
+      <td><a href="details/R00003.html">R00003</a></td>
+      <td>details/R00003.html</td>
+      <td>DNS Header.id</td>
+      <td>Server Fault</td>
+      <td>False</td>
+      <td>Invalid transaction ID triggered an assertion failure.</td>
+      <td>0102030405060708090a0b0c0d0e0f1011121314</td>
+    </tr>
+    <tr>
+      <td><a href="details/R00004.html">R00004</a></td>
+      <td>details/R00004.html</td>
+      <td>DNS Question.qtype</td>
+      <td>Memory Leak</td>
+      <td>True</td>
+      <td>Unsupported QTYPE values caused memory to not be freed.</td>
+      <td>4142434445464748494a4b4c4d4e4f505152535455565758595a</td>
+    </tr>
+    <tr>
+      <td><a href="details/R00005.html">R00005</a></td>
+      <td>details/R00005.html</td>
+      <td>DNS Compression Pointer</td>
+      <td>Server Fault</td>
+      <td>False</td>
+      <td>Infinite compression pointer loop caused stack overflow.</td>
+      <td>ffffffffffffffff</td>
+    </tr>
+  </tbody>
+</table>
+  </div>
+
+</body>
+</html>
