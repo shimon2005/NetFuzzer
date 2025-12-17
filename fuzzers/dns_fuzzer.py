@@ -9,44 +9,82 @@ from flask import session
 # Target / Docker Settings
 # =========================
 TARGET_IP = "127.0.0.1"
-TARGET_PORT = 9000
+TARGET_PORT = 5533
 
 DOCKER_IMAGE_NAME = "vuln-dnsmasq"
-CONTAINER_NAME = "dns-victim"
+CONTAINER_NAME = "test-health"
 
 START_CMD = [
     "docker", "run", "-d", "--rm",
     "--name", CONTAINER_NAME,
-    "-p", f"{TARGET_PORT}:53/udp",
+    "-p", f"{TARGET_PORT}:53",
     DOCKER_IMAGE_NAME
 ]
 
 # =========================
 # Target Control
 # =========================
-def restart_target():
-    print("[*] Restarting target...")
-    subprocess.run(
-        ["docker", "kill", CONTAINER_NAME],
-        stdout=subprocess.DEVNULL,
-        stderr=subprocess.DEVNULL
-    )
-    time.sleep(0.5)
-
-    try:
-        subprocess.run(
-            START_CMD,
-            check=True,
-            stdout=subprocess.DEVNULL,
-            stderr=subprocess.DEVNULL
-        )
-        time.sleep(1)
-        print("[*] Target is UP")
-    except subprocess.CalledProcessError:
-        print("[!!!] Failed to start target")
-        exit(1)
+# =========================
+# פונקציה חדשה: המתנה חכמה לפורט
+# =========================
+def wait_for_service(ip, port, timeout=10):
+    start_time = time.time()
+    print(f"[*] Waiting for service at {ip}:{port}...")
+    
+    while time.time() - start_time < timeout:
+        try:
+            # ננסה לשלוח פינג קטן כדי לראות אם יש מישהו בבית
+            sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+            sock.settimeout(0.5)
+            
+            # פאקטה סתמית רק כדי לראות שהפורט פתוח ולא נזרק Reset
+            sock.sendto(b"ping", (ip, port))
+            
+            # אם לא קיבלנו שגיאת ConnectionResetError מיידית, השרת כנראה למעלה
+            # (ב-UDP אנחנו לא תמיד מקבלים תשובה, אבל אנחנו רוצים לוודא שאין שגיאה)
+            time.sleep(0.1)
+            sock.close()
+            return True
+            
+        except (ConnectionResetError, ConnectionRefusedError, OSError):
+            # הפורט עדיין סגור, נחכה עוד קצת
+            time.sleep(0.5)
+        except Exception:
+            # כל שגיאה אחרת - ננסה שוב
+            time.sleep(0.5)
+            
+    return False
 
 # =========================
+# פונקציית הריסטארט המעודכנת
+# =========================
+def restart_target():
+    print("[*] Restarting target...")
+    
+    # ניקוי
+    subprocess.run(["docker", "rm", "-f", CONTAINER_NAME], 
+                   stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    
+    # הרצה
+    cmd = [
+        "docker", "run", "-d", "--rm",
+        "--name", CONTAINER_NAME,
+        "-p", f"{TARGET_PORT}:53/udp",
+        DOCKER_IMAGE_NAME
+    ]
+
+    try:
+        subprocess.run(cmd, check=True, stdout=subprocess.DEVNULL)
+        
+        # כאן התיקון: במקום סתם לחכות, אנחנו מוודאים שהשרת באמת עלה
+        if wait_for_service(TARGET_IP, TARGET_PORT):
+            print(f"[*] Target is UP and listening on {TARGET_PORT}")
+        else:
+            print("[!!!] Warning: Target started but port seems closed. Fuzzing might fail.")
+
+    except subprocess.CalledProcessError:
+        print("[!!!] Failed to start Docker container")
+        sys.exit(1)# =========================
 # Crash Reporting
 # =========================
 def generate_readable_report(session, filename_base):
@@ -183,17 +221,24 @@ def main():
 
     # -------- QUESTION --------
     if s_block_start("question"):
-        s_size("domain_label", length=1, fuzzable=True)
-        s_string("fuzz", name="domain_label", fuzzable=True)
+        
+        # --- הטריק שמפיל את השרת ---
+        # במקום לתת ל-Boofuzz לחשב אורך אוטומטית (s_size), אנחנו מגדירים את האורך כ"סתם בייט" (s_byte).
+        # זה אומר ש-Boofuzz ינסה לשים שם ערכים מטורפים (כמו 255, 0, -1) בלי קשר למחרוזת האמיתית.
+        s_byte(10, name="label_len", fuzzable=True) 
+        
+        # המחרוזת עצמה - אנחנו כמעט לא נוגעים בה, רק באורך שלה
+        s_string("AAAAAA", name="domain_label", fuzzable=True)
 
+        # סיומת (בלי Fuzzing, כדי שהשרת יחשוב שזו פאקטה לגיטימית עד שיהיה מאוחר מדי)
         s_byte(3, name="tld_len", fuzzable=False)
         s_string("com", name="tld", fuzzable=False)
-        s_byte(0, name="null_term", fuzzable=False)
+        s_byte(0, name="terminator", fuzzable=False)
 
-        s_word(1, name="qtype", fuzzable=False)
-        s_word(1, name="qclass", fuzzable=False)
-    s_block_end()
-
+        # סוגים סטנדרטיים
+        s_word(1, name="qtype", fuzzable=False)  # A Record
+        s_word(1, name="qclass", fuzzable=False) # IN
+        s_block_end()
     session.connect(s_get("dns_request"))
 
     print("[*] Starting DNS Fuzzing...")

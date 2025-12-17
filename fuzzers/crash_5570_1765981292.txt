@@ -1,0 +1,13 @@
+=== DNS FUZZING CRASH REPORT ===
+Timestamp      : Wed Dec 17 16:21:32 2025
+Test Case Index: 5570
+Payload Length : 276 bytes
+Payload SHA256 : 74c22dd33434bb3df82c6cc8a7f40a6570f3d1fd8dda3995c24bd8150e969335
+
+=== MUTATION METADATA ===
+[!] Error while extracting metadata: 'Request' object has no attribute 'mutant_path'
+[!] No structured mutation info available.
+[!] This crash is still VALID and reproducible using the payload below.
+
+=== FULL PAYLOAD (HEX) ===
+aaaa00010100000000000000017b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b03636f6d0001000100
