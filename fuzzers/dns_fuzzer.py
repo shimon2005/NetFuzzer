@@ -24,33 +24,24 @@ START_CMD = [
 # =========================
 # Target Control
 # =========================
-# =========================
-# פונקציה חדשה: המתנה חכמה לפורט
-# =========================
 def wait_for_service(ip, port, timeout=10):
     start_time = time.time()
     print(f"[*] Waiting for service at {ip}:{port}...")
     
     while time.time() - start_time < timeout:
         try:
-            # ננסה לשלוח פינג קטן כדי לראות אם יש מישהו בבית
             sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
             sock.settimeout(0.5)
             
-            # פאקטה סתמית רק כדי לראות שהפורט פתוח ולא נזרק Reset
             sock.sendto(b"ping", (ip, port))
             
-            # אם לא קיבלנו שגיאת ConnectionResetError מיידית, השרת כנראה למעלה
-            # (ב-UDP אנחנו לא תמיד מקבלים תשובה, אבל אנחנו רוצים לוודא שאין שגיאה)
             time.sleep(0.1)
             sock.close()
             return True
             
         except (ConnectionResetError, ConnectionRefusedError, OSError):
-            # הפורט עדיין סגור, נחכה עוד קצת
             time.sleep(0.5)
         except Exception:
-            # כל שגיאה אחרת - ננסה שוב
             time.sleep(0.5)
             
     return False
@@ -61,11 +52,9 @@ def wait_for_service(ip, port, timeout=10):
 def restart_target():
     print("[*] Restarting target...")
     
-    # ניקוי
     subprocess.run(["docker", "rm", "-f", CONTAINER_NAME], 
                    stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
     
-    # הרצה
     cmd = [
         "docker", "run", "-d", "--rm",
         "--name", CONTAINER_NAME,
@@ -76,7 +65,6 @@ def restart_target():
     try:
         subprocess.run(cmd, check=True, stdout=subprocess.DEVNULL)
         
-        # כאן התיקון: במקום סתם לחכות, אנחנו מוודאים שהשרת באמת עלה
         if wait_for_service(TARGET_IP, TARGET_PORT):
             print(f"[*] Target is UP and listening on {TARGET_PORT}")
         else:
@@ -84,62 +72,18 @@ def restart_target():
 
     except subprocess.CalledProcessError:
         print("[!!!] Failed to start Docker container")
-        sys.exit(1)# =========================
+        sys.exit(1)
+
+# =========================
 # Crash Reporting
 # =========================
 def generate_readable_report(session, filename_base):
     path = f"{filename_base}.txt"
 
     with open(path, "w") as f:
-        f.write("=== DNS FUZZING CRASH REPORT ===\n")
-        f.write(f"Timestamp      : {time.ctime()}\n")
-        f.write(f"Test Case Index: {session.total_mutant_index}\n")
-
-        # -------- תמיד נרשם --------
-        if session.last_send:
-            payload = session.last_send
-            f.write(f"Payload Length : {len(payload)} bytes\n")
-            f.write(f"Payload SHA256 : {hashlib.sha256(payload).hexdigest()}\n")
-        else:
-            f.write("Payload        : <not available>\n")
-
-        f.write("\n")
-
         f.write("=== MUTATION METADATA ===\n")
         node = session.fuzz_node
 
-        wrote_metadata = False
-
-        try:
-            if node and node.mutant_path:
-                for m in list(node.mutant_path):
-                    field = "<unknown>"
-                    mutation = "<unknown>"
-
-                    try:
-                        if m.element and hasattr(m.element, "name"):
-                            field = m.element.name
-                    except:
-                        pass
-
-                    try:
-                        mutation = m.name
-                    except:
-                        pass
-
-                    f.write(f"- Field    : {field}\n")
-                    f.write(f"  Mutation : {mutation}\n")
-                    wrote_metadata = True
-        except Exception as e:
-            f.write(f"[!] Error while extracting metadata: {e}\n")
-
-        if not wrote_metadata:
-            f.write(
-                "[!] No structured mutation info available.\n"
-                "[!] This crash is still VALID and reproducible using the payload below.\n"
-            )
-
-        # -------- payload עצמו --------
         f.write("\n=== FULL PAYLOAD (HEX) ===\n")
         if session.last_send:
             f.write(session.last_send.hex())
