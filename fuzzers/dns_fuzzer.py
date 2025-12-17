@@ -2,6 +2,8 @@ from boofuzz import *
 import socket
 import time
 import subprocess
+import hashlib
+from flask import session
 
 # =========================
 # Target / Docker Settings
@@ -16,13 +18,7 @@ START_CMD = [
     "docker", "run", "-d", "--rm",
     "--name", CONTAINER_NAME,
     "-p", f"{TARGET_PORT}:53/udp",
-    DOCKER_IMAGE_NAME,
-    "./src/dnsmasq", "-k",
-    "--log-facility=-",
-    "--no-daemon",
-    "--no-hosts",
-    "--no-resolv",
-    "--address=/#/1.2.3.4"
+    DOCKER_IMAGE_NAME
 ]
 
 # =========================
@@ -58,36 +54,66 @@ def generate_readable_report(session, filename_base):
 
     with open(path, "w") as f:
         f.write("=== DNS FUZZING CRASH REPORT ===\n")
-        f.write(f"Timestamp: {time.ctime()}\n")
-        f.write(f"Mutant Index: {session.total_mutant_index}\n\n")
+        f.write(f"Timestamp      : {time.ctime()}\n")
+        f.write(f"Test Case Index: {session.total_mutant_index}\n")
 
-        mutant = session.fuzz_node.mutant
-
-        if mutant and mutant.element:
-            f.write(f"[+] Attacked Field : {mutant.element.name}\n")
-            f.write(f"[+] Mutation Type : {mutant.name}\n")
-
-            try:
-                val = mutant.element.render()
-                f.write(f"[+] Field Value  : {val}\n")
-            except Exception:
-                f.write("[+] Field Value  : <binary data>\n")
+        # -------- תמיד נרשם --------
+        if session.last_send:
+            payload = session.last_send
+            f.write(f"Payload Length : {len(payload)} bytes\n")
+            f.write(f"Payload SHA256 : {hashlib.sha256(payload).hexdigest()}\n")
         else:
-            f.write("[!] Could not retrieve mutation details\n")
+            f.write("Payload        : <not available>\n")
 
+        f.write("\n")
+
+        f.write("=== MUTATION METADATA ===\n")
+        node = session.fuzz_node
+
+        wrote_metadata = False
+
+        try:
+            if node and node.mutant_path:
+                for m in list(node.mutant_path):
+                    field = "<unknown>"
+                    mutation = "<unknown>"
+
+                    try:
+                        if m.element and hasattr(m.element, "name"):
+                            field = m.element.name
+                    except:
+                        pass
+
+                    try:
+                        mutation = m.name
+                    except:
+                        pass
+
+                    f.write(f"- Field    : {field}\n")
+                    f.write(f"  Mutation : {mutation}\n")
+                    wrote_metadata = True
+        except Exception as e:
+            f.write(f"[!] Error while extracting metadata: {e}\n")
+
+        if not wrote_metadata:
+            f.write(
+                "[!] No structured mutation info available.\n"
+                "[!] This crash is still VALID and reproducible using the payload below.\n"
+            )
+
+        # -------- payload עצמו --------
         f.write("\n=== FULL PAYLOAD (HEX) ===\n")
         if session.last_send:
             f.write(session.last_send.hex())
         else:
             f.write("<no payload captured>")
 
-    print(f"[+] Report saved: {path}")
+    print(f"[+] Crash report written: {path}")
 
 def save_crash_evidence(session):
     ts = int(time.time())
     base = f"crash_{session.total_mutant_index}_{ts}"
 
-    # Docker logs
     with open(f"{base}_server.log", "w") as f:
         subprocess.run(
             ["docker", "logs", CONTAINER_NAME],

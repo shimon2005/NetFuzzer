@@ -29,4 +29,4 @@ RUN make clean || true \
 EXPOSE 53/udp
 EXPOSE 53/tcp
 
-CMD ["sh", "-c", "./src/dnsmasq -k --no-daemon --no-hosts --no-resolv --address=/#/1.2.3.4 2>&1 | tee /tmp/dnsmasq_crash.log"]
+CMD ["./src/dnsmasq", "-k", "--no-daemon", "--no-hosts", "--no-resolv", "--address=/#/1.2.3.4"]
