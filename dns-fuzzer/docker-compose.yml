@@ -3,5 +3,4 @@ services:
     build: .
     container_name: dnsmasq_asan_lab
     ports:
-      - "5533:53/udp"
-      - "5533:53/tcp"
+      - "5533:53"
