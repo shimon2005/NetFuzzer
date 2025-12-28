@@ -1,16 +1,35 @@
-# React + Vite
+# NetFuzzer 🛡️
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**NetFuzzer** is a powerful, modular network protocol fuzzing tool designed to detect vulnerabilities in network services. Built on top of the **Boofuzz** framework, it automates the process of stress-testing protocols like DNS and HTTP, providing detailed post-run analysis and visualization.
 
-Currently, two official plugins are available:
+![License](https://img.shields.io/badge/license-MIT-blue.svg)
+![Python](https://img.shields.io/badge/python-3.10+-blue.svg)
+![Docker](https://img.shields.io/badge/docker-supported-blue.svg)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Key Features
 
-## React Compiler
+* **Multi-Protocol Support:** Built-in fuzzing modules for **HTTP** and **DNS**.
+* **Boofuzz Integration:** Leverages the industry-standard Boofuzz engine for state-aware fuzzing.
+* **Automated Reporting:** Generates comprehensive HTML reports with graphs (failures by cause, top observations) to easily analyze crash data.
+* **Containerized:** Fully dockerized environment for safe and isolated testing.
+* **Live Monitoring:** Real-time statistics management during the fuzzing session.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 🛠️ Technology Stack
 
-## Expanding the ESLint configuration
+* **Language:** Python 3
+* **Fuzzing Engine:** Boofuzz
+* **Packet Manipulation:** Scapy (implied usage for network interactions)
+* **Infrastructure:** Docker & Docker Compose
+* **Frontend/Reporting:** HTML/CSS Injection for visual logs
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 📂 Project Structure
+
+```bash
+NetFuzzer/
+├── core/               # Core utilities and configuration
+├── fuzzers/            # Protocol specific fuzzing scripts (DNS, HTTP)
+├── analysis/           # Stats manager and data handling
+├── frontend/           # Report generation logic
+├── boofuzz-results/    # Database files from fuzzing runs
+├── docker-compose.yml  # Container orchestration
+└── main.py             # Entry point
